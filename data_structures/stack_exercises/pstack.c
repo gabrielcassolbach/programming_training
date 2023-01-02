@@ -1,16 +1,16 @@
-#include "stack.h"
+#include "pstack.h"
 
 /*Função que cria e inicializa uma pilha de tamanho {size}.*/
 Stack *create (int size) {
   Stack *s = (Stack *)malloc(sizeof(Stack));
   s->peek = 0;
   s->size = size;
-  s->array = (int *)malloc(size * sizeof(int));
+  s->array = (point *)malloc(size * sizeof(point));
   return s;
 }
 
 /*Função para empilhar {elem} na pilha {s}.*/
-void push (Stack *s, int elem) {
+void push (Stack *s, point elem) {
   if (full(s)) {
     printf ("error: stack overflow!\n");
     exit(1);
@@ -20,7 +20,7 @@ void push (Stack *s, int elem) {
 }
 
 /*Função para desempilhar o elemento no topo da pilha {s}.*/
-int pop (Stack *s) {
+point pop (Stack *s) {
   if (empty(s)) {
     printf ("error: stack underflow!\n");
     exit(1);
@@ -30,11 +30,9 @@ int pop (Stack *s) {
 }
 
 /*Função que retorna mas não remove o primeiro elemento de {s}.*/
-int get_peek (Stack *s) {
+point get_peek (Stack *s) {
   if (!empty(s)) 
     return s->array[s->peek-1];	  
-  else 
-    return ERROR;
 }
 
 /*Função que verifica se a pilha {q} está vazia (true) ou não {false}.*/
@@ -47,16 +45,6 @@ int full (Stack *s) {
   return (s->peek == s->size);	
 }
 
-/*Função que imprime uma pilha {s}.*/
-void print (Stack *s) {
-  int i;
-  printf("Stack: ");
-  for (i = s->peek-1; i >= 0; i--) {
-    printf ("%d ", s->array[i]);	  
-  }
-  printf("\n");
-}
-
 /*Função que desaloca as estruturas de uma pilha {s}.*/
 void destroy (Stack *s) {
   free (s->array);
@@ -66,4 +54,14 @@ void destroy (Stack *s) {
 /*Função que retorna o número de elementos alocados no array*/
 int get_size (Stack *s) {
   return s->size;
+}
+
+/*Função que imprime uma pilha {s}.*/
+void print (Stack *s) {
+  int i;
+  printf("Stack: ");
+  for (i = s->peek-1; i >= 0; i--) {
+    printf ("(%d,%d) ", s->array[i].x, s->array[i].y);
+  }
+  printf("\n");
 }

@@ -31,7 +31,7 @@ void reversed_polish_notation (char *c) {
     }
     i++;
   }
-  print2 (np);
+  //print2 (np);
   printf("\n");
   destroy(np); destroy(p); destroy(o);
 }
