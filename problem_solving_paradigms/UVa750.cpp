@@ -2,7 +2,7 @@
 using namespace std;
 
 // Backtracking Example - HALIM | HALIM.
-
+ 
 int row[8], TC, a, b, lineCounter;
 
 bool place(int r, int c){
