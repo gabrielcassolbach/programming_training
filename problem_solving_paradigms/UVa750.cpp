@@ -10,7 +10,7 @@ bool place(int r, int c){
         if(row[prev] == r || (abs(row[prev] - r)) == abs(prev - c)) // 1 == 1
             return false; // share same row or same diagonal.
     return true;
-}
+} 
 
 void backtrack(int c){
     if(c == 8 && row[b] == a){ // candidate sol, (a, b) has 1 queen.     
