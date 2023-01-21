@@ -2,6 +2,7 @@
 using namespace std;
 #define N 8
 // The Sultan Sucessor.
+
 /*
 Input: 
 -> k boards (maximum number of boards is 20);
@@ -10,6 +11,7 @@ Output:
 -> k numbers, consisting k scores. 
 (each score on a line by itself and right justified in a field 5 characters wide).
 */
+
 int board[N][N]; int row[N];
 int best_score;
 
