@@ -11,9 +11,9 @@ bool place(int r, int c){
             return false; // share same row or same diagonal.
     return true;
 } 
-
+ 
 void backtrack(int c){
-    if(c == 8 && row[b] == a){ // candidate sol, (a, b) has 1 queen.     
+    if(c == 8 && row[b] == a){ // candidate sol: (a, b) has 1 queen.     
         printf("%2d        %d", ++lineCounter, row[0] + 1);
         for(int j = 1; j < 8; j++) printf(" %d", row[j] + 1);
         printf("\n");
