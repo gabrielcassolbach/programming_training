@@ -3,12 +3,6 @@ using namespace std;
 
 #define MAX 1000000
 
-/*
-25875
-15282
-141
-*/
-
 typedef long long int ll;
 
 ll values[MAX], digits[MAX], numbers[MAX], p_range[MAX];
@@ -31,8 +25,8 @@ void set_array(){
 }     
 
 int get_digit(int pos, int value){
-    int i = get_digits(value) - 1; int s[7]; 
-    while(value) {s[i--] = value % 10; value /= 10;} 
+    int i = get_digits(value) - 1; int s[15]; 
+    while(value && i != -1) {s[i--] = value % 10; value /= 10;} 
     return s[pos - 1];  
 }
 
@@ -53,14 +47,11 @@ ll create_prange(int a, int b){
     return cont;
 }
 
-int search (int a, int b, int pos){
-    ll range_size = create_prange(a, b); ll cont = 0;
-    if(pos == digits[a]) {return p_range[range_size - 1 - (values[a] - values[a - 1])];}
-    for(int n = digits[a] + 1; n <= digits[b]; n++){ 
-        if(n == pos) return p_range[cont];
-        cont++; 
-    }
-    return -1;
+int search (int a, int b, int pos){ // pos = 1
+    ll range_size = create_prange(a, b);
+    if(pos == digits[a] && a) return p_range[range_size - 1 - (values[a] - values[a - 1])];
+    if(pos == digits[a] && !a) return p_range[0];
+    return p_range[pos - (digits[a] + 1)];
 }
 
 ll location(int pos){
