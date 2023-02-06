@@ -1,54 +1,59 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ARRAY_LENGHT 100000
+#define MAX 100000
 
-// 10706 - Number Sequence.
-// ------------------------
+typedef long long int ll;
 
-int p_answers[ARRAY_LENGHT]; int cont;
+ll values[MAX], digits[MAX], numbers[MAX], p_range[MAX];
 
-void set_array() {for(int i = 0; i < ARRAY_LENGHT; i++) p_answers[i] = i + 1;}
-
-long int get_distance(int n) 
-    {return ((p_answers[0] + p_answers[n])*(n+1))/2;}
-
-long int binary_search(int number){
-    long int a = 0; long int b = ARRAY_LENGHT; long int m = (a + b) / 2;
-    printf("entrou no binary search\n");
-    int count = 0;
-    while(a < b){
-        count++;
-        printf("looping..."); printf("a: %ld & b: %ld & m: %ld\n", a, b, m);
-        printf("distance: %ld\n", get_distance(m));
-        if(count == 10) return m;
-        if(get_distance(m) == number) return m;
-        if(get_distance(m) < number)
-            {a = m; m = ceil((a+b)/2);}
-        if(get_distance(m) > number)
-            {b = m; m = floor((a+b)/2);}
-    }
-    return m;
+int get_digits(int value){
+    int digits = 0;
+    while(value) {++digits; value /= 10;}
+    return digits;
 }
 
-void position (int number){
-    printf("entrou position\n");
-    int pos = binary_search(number);
-    printf("position: %d\n", pos);
-}  
+void set_array(){
+    for(int n = 0; n < MAX; n++) 
+        {numbers[n] = n + 1;}
+    values[0] = 1;
+    for(int n = 1; n < MAX; n++) 
+        {values[n] = values[n - 1] + (get_digits(n + 1));}
+    digits[0] = 1;
+    for(int n = 1; n < MAX; n++)
+        {digits[n] = (values[n] + digits[n - 1]);}
+}     
+
+int search (int a, int b, int pos){
+    ll cont = 0;
+    for(int i = 1; i <= numbers[a]; i++){
+        int value = i; 
+        while(value) {p_range[cont++] = value % 10; value /= 10;}
+    }
+    for(int i = 1; i <= numbers[b]; i++){
+        int value = i; 
+        while(value) {p_range[cont++] = value % 10; value /= 10;}
+    }
+    for(int i = 0; i < cont; i++) printf("%lld ", p_range[i]);
+    printf("\n");
+    return -1;
+}
+
+ll location(int pos){
+    int a = 0; int b = MAX - 1; int m = (a + b) / 2;
+    while(abs(a - b) != 1){
+        if(digits[m] <= pos) 
+            {a = m; m = (a + b) / 2;}
+        else 
+            {b = m; m = (a + b) / 2;}
+    }
+    printf("(%d , %d)\n", a, b);
+    return search(a, b, pos);
+}
 
 int main(){
-    int t; long int number = 0;
-    scanf("%d", &t);
-    set_array();
-    while(t--){
-        scanf("%ld", &number);
-        printf("number: %ld\n", number);
-        printf("Chamou position\n");
-        position(number);
-        printf("saiu position\n");
-    }
+    int t; ll pos;
+    scanf("%d", &t); set_array();
+    while(t--) {scanf("%lld", &pos); printf("%lld\n", location(pos));}
     return 0;
 }
-
-
