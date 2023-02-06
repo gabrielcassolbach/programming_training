@@ -1,7 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX 100000
+#define MAX 1000000
+
+/*
+25875
+15282
+141
+*/
 
 typedef long long int ll;
 
@@ -24,18 +30,36 @@ void set_array(){
         {digits[n] = (values[n] + digits[n - 1]);}
 }     
 
-int search (int a, int b, int pos){
+int get_digit(int pos, int value){
+    int i = get_digits(value) - 1; int s[7]; 
+    while(value) {s[i--] = value % 10; value /= 10;} 
+    return s[pos - 1];  
+}
+
+ll create_prange(int a, int b){
     ll cont = 0;
     for(int i = 1; i <= numbers[a]; i++){
         int value = i; 
-        while(value) {p_range[cont++] = value % 10; value /= 10;}
+        for(int j = 1; j <= get_digits(value); j++){ // 1 -> 2.
+            p_range[cont++] = get_digit(j, value);
+        }
     }
     for(int i = 1; i <= numbers[b]; i++){
         int value = i; 
-        while(value) {p_range[cont++] = value % 10; value /= 10;}
+        for(int j = 1; j <= get_digits(value); j++){ // 1 -> 2.
+            p_range[cont++] = get_digit(j, value);
+        }
     }
-    for(int i = 0; i < cont; i++) printf("%lld ", p_range[i]);
-    printf("\n");
+    return cont;
+}
+
+int search (int a, int b, int pos){
+    ll range_size = create_prange(a, b); ll cont = 0;
+    if(pos == digits[a]) {return p_range[range_size - 1 - (values[a] - values[a - 1])];}
+    for(int n = digits[a] + 1; n <= digits[b]; n++){ 
+        if(n == pos) return p_range[cont];
+        cont++; 
+    }
     return -1;
 }
 
@@ -47,13 +71,13 @@ ll location(int pos){
         else 
             {b = m; m = (a + b) / 2;}
     }
-    printf("(%d , %d)\n", a, b);
     return search(a, b, pos);
 }
 
 int main(){
     int t; ll pos;
-    scanf("%d", &t); set_array();
+    scanf("%d", &t); 
+    set_array(); 
     while(t--) {scanf("%lld", &pos); printf("%lld\n", location(pos));}
     return 0;
 }
