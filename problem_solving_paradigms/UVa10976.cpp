@@ -10,8 +10,7 @@ typedef struct{
     int b;
 } Pair;
 
-vector <Pair> v;
-int cont; 
+vector <Pair> v; int cont; 
 
 bool check(int n, int x, int y){
     double ans = 1.0 / (double) n;
@@ -29,7 +28,6 @@ bool used(int x, int y){
 
 bool integer(double n){
     double diff = (n - (int)n);
-    //printf("checking... %lf\n", diff); 
     if(diff > EPS) return false; 
     return ((int) n);  
 }
@@ -39,7 +37,6 @@ int calc(int n, int x){
     up_fraction = abs(x - n);  down_fraction = (x*n);
     if(up_fraction != 1)
         down_fraction = (down_fraction / up_fraction);
-    //printf("up: %lf & down: %lf\n", up_fraction, down_fraction);
     if(!integer(down_fraction)) return -1;
     return (int) down_fraction;
 }
@@ -54,23 +51,32 @@ void solutions(int n){
     int y; Pair value;  
     for(int x = MAX; x > n; x--){
         y = teste(n, x);
-        //printf("y: %d\n", y);
         if(y != -1 && !(used(x, y)) && check(n, x, y)){
-            cont++;
-            value.a = x; value.b = y;
-            v.push_back(value);
+            cont++;            
+            value.a = x; value.b = y; 
+            v.push_back(value); 
         }
     }
 }
 
 void set_parameters(){
-    v.clear(); cont = 0; 
+    v.clear(); cont = 0;
+}
+
+bool compare (Pair one, Pair two) {return (one.a  > two.a);}
+
+void set_solutions(int n){
+    for(int i = 0; i < v.size(); i++)
+        if(v[i].a < v[i].b)
+            {int aux = v[i].a; v[i].a = v[i].b; v[i].b = aux;}
+    sort(v.begin(), v.end(), compare);
 }
 
 void print_solutions(int n){
     printf("%d\n", cont);
-    for(int i = 0; i < (int) v.size(); i++)
-        printf("1/%d = 1/%d + 1/%d\n", n, v[i].b, v[i].a);
+    set_solutions(n);    
+    for(int i = 0; i < v.size(); i++)
+        printf("1/%d = 1/%d + 1/%d\n", n, v[i].a, v[i].b);
 }
 
 int main(){
