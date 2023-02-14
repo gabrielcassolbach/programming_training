@@ -5,6 +5,7 @@ using namespace std;
 /*----------------------------------------------*/
 /*                  (CD - 624)                  */
 /*----------------------------------------------*/
+
 int CD[MAX], n, tracks, best_track, delta, id;
 vector<int> p; vector<int> bp;
 
@@ -31,11 +32,11 @@ void backtrack(int pos, int sum){
     if(sum > n) return;
     if(pos >= 0) p.push_back(CD[pos]);
     for(int i = pos + 1; i < tracks; i++)
-            backtrack(i , sum + CD[i]);
+        backtrack(i , sum + CD[i]);
     if(best_option(sum)) save_path(sum);
     p.pop_back();
 }
-
+                                                                
 void set_parameters(){
     best_track = -10; delta = 99999; id = -1;
     p.clear(); bp.clear();
