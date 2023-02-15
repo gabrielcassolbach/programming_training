@@ -1,32 +1,58 @@
 // Y2K Accounting Bug.
-// Hints: Generate all, prune, take max.
-// Primeira tentativa: começando a entender o problema.
-
 #include <bits/stdc++.h>
 using namespace std;
 
-#define MAX 12
+vector <int> v; int answer;
 
-int month[MAX];
-
-void backtrack(int s, int d, int m){}
-
-int surplus(int s, int d){
-    backtrack(s, d, 0);
-    // use the array to return -1 if you have in the best_path a deficit.
-    // or the surplus of the year.
+bool best_option(int s, int d, int m){
+    int sum = 0;
+    for(int i = 0; i < v.size(); i++)
+        sum += v[i];
+    if(sum >= 0 && sum > answer) 
+        answer = sum;
 }
 
-void set_parameters() {memset(month, 0, sizeof month);}
+bool place(int i, int s, int d, int m){
+    int report = 0;
+    if(m < 4) return true; 
+    for(int i = (m - 4); i < m; i++)
+        report += v[i];     
+    if(!i) report += s;
+    else   report += d; 
+    if(report < 0) return true;
+    return false;
+}
+
+void print_vector(){
+    for(int i = 0; i < v.size(); i++)
+        printf("%d ", v[i]);
+    printf("\n");
+}
+
+void backtrack(int s, int d, int m){
+    print_vector();
+    if(m == 12) {best_option(s, d, m); return;}
+    for(int i = 0; i < 2; i++)
+        if(place(i, s, d, m)){
+            if(!i) v.push_back(s);
+            else   v.push_back(d);        
+            backtrack(s, d, m + 1);
+        }
+    //v.pop_back();
+}
+
+void set_parameters(){
+    answer = -1; v.clear();
+}
 
 int main(){
-    int s, d; int total;
+    int s, d;
     while(scanf("%d", &s) != EOF){
         scanf("%d", &d);
-        set_parameters();
-        total = surplus(s, d);
-        if(total >= 0) printf("%d\n", total);
-        else printf("Deficit\n");
+        set_parameters(); 
+        backtrack(s, d, 0);
+        if(answer == -1) printf("Deficit\n");
+        else printf("%d\n", answer);
     }
     return 0;
 }
