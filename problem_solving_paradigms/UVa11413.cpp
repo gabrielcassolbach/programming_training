@@ -10,7 +10,7 @@ using namespace std;
 
 int v[MAX];
 
-bool sum_v(int n){
+int sum_v(int n){
     int sum = 0;
     for(int i = 0; i < n; i++)  
         sum += v[i];
@@ -38,26 +38,29 @@ bool tryCapacity(int n, int m, int maxCapacity){
 void binary_search(int n, int m){
     int lo, hi, best, mid;
     lo = 1;
-    //hi = sum_v(n);
-    hi = 91;
+    hi = sum_v(n);
     best = hi + 1;
     while (lo <= hi){
         mid = lo + (hi - lo) / 2;
-        printf("lo: %d & hi: %d & mid: %d\n", lo, hi, mid);
+        //printf("lo: %d & hi: %d & mid: %d\n", lo, hi, mid);
         if(tryCapacity(n, m, mid))
             {best = mid; hi = --mid;}
         else 
             {lo = ++mid;}
-        printf("inside the loop: %d\n", best);
     }
-    printf("outside the loop: %d\n", best);
+    printf("%d\n", best);
 }
 
+void set_parameters(){memset(v, 0, sizeof v);}
+
 int main(){
-    int n, m;   
-    scanf("%d %d", &n, &m);
-    for(int i = 0; i < n; i++) 
-        scanf("%d", &v[i]);
-    binary_search(n, m);
+    int n, m;
+    while(scanf("%d", &n) != EOF){
+        scanf("%d", &m);
+        set_parameters();
+        for(int i = 0; i < n; i++) 
+            scanf("%d", &v[i]);
+        binary_search(n, m);
+    }
     return 0;
 }
