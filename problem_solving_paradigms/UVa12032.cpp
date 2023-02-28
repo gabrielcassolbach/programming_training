@@ -1,39 +1,40 @@
-// The Monkey and the Oiled Bamboo -> {UVa12032}
 #include <bits/stdc++.h>
 using namespace std;
 
 #define MAX 112345
 
-/*
-- Input starts with a integer t (t <= 500), denoting the number of test cases.
-Each case starts with a line containing an integer n denoting the number of 
-rungs in the ladder. The next line contains n space separated integers r1, r2, .. rn. 
-denoting the heights of the rungs from the ground.
+int v[MAX];
 
-- observations: 
- - we can have 10⁵ rungs in the worst case.
- - each rung can have a value of 10⁷.
+int sum_v(int n){
+    int sum = 0;
+    for(int i = 0; i < n; i++)  
+        sum += v[i];
+    return sum;
+}
 
-- Output:
-- For each test case, print the minimum k value necessary to the person climb up the ladder.
--> The objective of this problem is to find an algorithm that finds that.
-*/
+void binary_search(int n){
+    int lo, hi, mid, k;
+    lo = 1;
+    hi = sum_v(n);
+    k = hi + 1;
+    while(lo <= hi){
+        mid = lo + (hi - lo) / 2;
+        if(trik(mid, n)){
+            k = mid;
+            
+        }
 
-void min_k (int t, int n, int* v){
-    
-
+    }
 }
 
 int main(){
     int t, n;
-    int v[MAX];
     scanf("%d", &t);
     while(t--){
         scanf("%d", &n);
-        for(int i = 0; i < n; i++) 
+        for(int i = 0; i < n; i++)
             scanf("%d", &v[i]);
-        min_k(t, n, v);
+        binary_search(n);
     }
     return 0;
-} 
-   
+}
