@@ -1,0 +1,8 @@
+async function obterDadosdoBancodeDados(singer, music) {
+	try{
+		const resposta = await fetch(`http..`);
+		const dados = await.resposta.json();
+	}catch{
+		console.log("error");
+	}
+} 
