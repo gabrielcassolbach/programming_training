@@ -24,7 +24,7 @@ void getMinString(){
     int j = 0, ctrler = 0;
     vector<char> auxs; 
     for(int i = 0; i < MAX; i++) usedi[i] = -1;
-    while(j <  total){
+    while(j < total){
         for(int i = ctrler; i < total; i += k){
             if (usedi[i] == -1)
                 {usedi[i] = 0; auxs.push_back(s[i]); j++;}
