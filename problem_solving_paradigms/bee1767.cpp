@@ -1,53 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define h 5
-#define l 7
+// o peso máximo da mochila é igual a 50kg.
 
-// entrada: dois vetores -> peso e valor. ( ou um único vetor que armazena uma struct com dois campos).
-int n, w;
-int v[4], p[4];
-int m[h][l];
+#define MAX 101
+#define WEIGHT 51
+
+typedef struct {
+    int v; 
+    int p;
+} Pair;
+
+Pair itens[MAX];
+int tc, pac; 
+int m[MAX][WEIGHT];
 
 void printmatrix(){
-    printf("\n matrix: \n");
-    for(int i = 0; i < h; i++){
-        for(int j = 0; j < l; j++)
-            printf("%d ", m[i][j]);
+    printf("\n");
+    printf("pac is %d\n", pac);
+    for(int i = 0; i < pac + 1; i++){
+        for(int j = 0; j <= 50; j++)
+            printf("%d ",m[i][j]);
         printf("\n");
     }
-    printf("\n");
+    printf("\n");    
 }
 
-void mochila(){
-    for(int i = 0; i < h; i++) 
+void printAns(int value){
+    
+
+}
+
+void answer(){
+    int qtd = 0, w = 0;
+    for(int i = 0; i <= (pac); i++)
         m[i][0] = 0;
-    for(int j = 0; j < h; j++)
+    for(int j = 0; j <= 50; j++)
         m[0][j] = 0;
-    printmatrix();
-    for(int i = 1; i < h; i++){
-        for(int j = 1; j < l; j++){
-            if((j < p[i-1]) || (m[i-1][j] >= m[i-1][j-p[i-1]] + v[i-1]))
-                {m[i][j] = m[i-1][j]; printf("you didn't pick item a%d\n", i-1);}
-            else 
-                {m[i][j] = m[i-1][j-p[i-1]] + v[i-1];  printf("you pick item a%d\n", i-1);}
+    for(int i = 1; i <= pac; i++){
+        for(int j = 1; j <= 50; j++){
+            if((j < itens[i-1].p) || (m[i-1][j] >= m[i-1][j-itens[i-1].p] + itens[i-1].v))
+                m[i][j] = m[i-1][j];
+            else   
+                m[i][j] = m[i-1][j-itens[i-1].p] + itens[i-1].v;
         }
-        printmatrix();
     }
-    printmatrix();
-}
-
-void lerValores(){
-    scanf("%d", &n);
-    scanf("%d", &w);
-    for(int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
-    for(int i = 0; i < n; i++)
-        scanf("%d", &p[i]);
+    printAns(m[pac][50]);
 }
 
 int main(){
-    lerValores();
-    mochila();
+    scanf("%d", &tc);
+    while(tc--){
+        scanf("%d", &pac);
+        for(int i = 0; i < pac; i++)
+            scanf("%d %d", &itens[i].v, &itens[i].p);
+        answer();
+    }
     return 0;
 }
