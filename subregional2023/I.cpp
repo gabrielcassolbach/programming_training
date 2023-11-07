@@ -26,7 +26,7 @@ ll answer(){
                 while(p[k] && k < n) k++;
                 ans += p[k-1];
             }
-            if(p[i+1])            
+            if(p[i+1] == )            
         }
         printf("i=%d and answer is %lld\n", i, ans);
     }
