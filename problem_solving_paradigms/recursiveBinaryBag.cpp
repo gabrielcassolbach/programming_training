@@ -1,48 +1,50 @@
-// problem set: PAAS73-2023/2.
-// voltar.
 #include <bits/stdc++.h>
 using namespace std;
 
+#define MAX 1123
+
+int v[MAX], p[MAX], m[MAX][MAX];
 int n, w;
-int v[4], p[4];
-int m[5][7];
 
 void printMatrix(){
-    for(int i = 0; i <= 4; i++){
-        for(int j = 0; j <= 6; j++){
+    for(int i = 0; i <= n; i++){
+        for(int j = 0; j <= w; j++){
             if(m[i][j] >= 0)
                 printf("+%d ", m[i][j]);
-            else  
-                printf("%d ", m[i][j]);   
+            else 
+                printf("%d ", m[i][j]);
         }
         printf("\n");
     }
-    printf("\n");
 }
 
-int mochila(int i, int j){
-    
-}
-
-void initMatrix(){
-    for(int i = 0; i <= 4; i++)
-        for(int j = 0; j <= 6; j++)
+void init(){
+    scanf("%d", &n);
+    scanf("%d", &w);
+    for(int i = 1; i <= n; i++) 
+        scanf("%d", &v[i]);
+    for(int i = 1; i <= n; i++) 
+        scanf("%d", &p[i]);
+    for(int i = 0; i <= n; i++)
+        for(int j = 0; j <= w; j++)
             m[i][j] = -1;
 }
 
-void lerValores(){
-    scanf("%d", &n);
-    scanf("%d", &w);
-    for(int i = 0; i < n; i++)
-        scanf("%d", &v[i]);
-    for(int i = 0; i < n; i++)
-        scanf("%d", &p[i]);
+int mochila(int i, int j){
+    if(!i || !j) 
+        {m[i][j] = 0; return m[i][j];} // caso base.
+    if(m[i][j] != -1) 
+        return m[i][j];
+    if(j < p[i])
+        m[i][j] = mochila(i-1, j);
+    else 
+        m[i][j] = max(mochila(i-1, j), mochila(i-1, j-p[i]) + v[i]);
+    return m[i][j];
 }
 
 int main(){
-    lerValores();
-    initMatrix();
-    printf("valor da mochila: %d\n", mochila(4, 6)); 
+    init();
+    printf("%d\n", mochila(4, 6));
     printMatrix();
     return 0;
 }
