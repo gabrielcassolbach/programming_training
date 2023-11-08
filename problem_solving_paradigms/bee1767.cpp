@@ -6,55 +6,41 @@ using namespace std;
 #define MAX 101
 #define WEIGHT 51
 
-typedef struct {
-    int v; 
-    int p;
-} Pair;
+int v[MAX], p[MAX], m[MAX][WEIGHT];
 
-Pair itens[MAX];
-int tc, pac; 
-int m[MAX][WEIGHT];
-
-void printmatrix(){
-    printf("\n");
-    printf("pac is %d\n", pac);
-    for(int i = 0; i < pac + 1; i++){
+void initMatrix(){
+    for(int i = 0; i <= MAX; i++)
         for(int j = 0; j <= 50; j++)
-            printf("%d ",m[i][j]);
-        printf("\n");
-    }
-    printf("\n");    
+            m[i][j] = -1;
 }
 
-void printAns(int value){
+int mochila(int i, int j){
+    if(!i || !j) 
+        {m[i][j] = 0; return m[i][j];}
+    if(m[i][j] != -1) 
+        return m[i][j];
+    if(j < p[i-1])
+        m[i][j] = mochila(i-1, j);
+    else 
+        m[i][j] = max(mochila(i-1, j), mochila(i-1, j-p[i-1]) + v[i-1]);
+    return m[i][j];
+}
     
-
-}
-
-void answer(){
-    int qtd = 0, w = 0;
-    for(int i = 0; i <= (pac); i++)
-        m[i][0] = 0;
-    for(int j = 0; j <= 50; j++)
-        m[0][j] = 0;
-    for(int i = 1; i <= pac; i++){
-        for(int j = 1; j <= 50; j++){
-            if((j < itens[i-1].p) || (m[i-1][j] >= m[i-1][j-itens[i-1].p] + itens[i-1].v))
-                m[i][j] = m[i-1][j];
-            else   
-                m[i][j] = m[i-1][j-itens[i-1].p] + itens[i-1].v;
-        }
-    }
-    printAns(m[pac][50]);
+void printAns(int i, int j){
+    int valor = mochila(i, j);  
+    printf("%d brinquedos\n", valor);
+    printf("Peso: %d kg\n", 0);
+    printf("sobra(m) %d pacote(s)\n\n", 0);
 }
 
 int main(){
-    scanf("%d", &tc);
-    while(tc--){
-        scanf("%d", &pac);
+    int n; scanf("%d", &n);
+    while(n--){
+        initMatrix();
+        int pac; scanf("%d", &pac);
         for(int i = 0; i < pac; i++)
-            scanf("%d %d", &itens[i].v, &itens[i].p);
-        answer();
-    }
+            scanf("%d %d", &v[i], &p[i]);
+        printAns(pac, 50);
+    }   
     return 0;
 }
