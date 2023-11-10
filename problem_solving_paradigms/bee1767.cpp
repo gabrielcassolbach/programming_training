@@ -45,11 +45,9 @@ int mochila(int i, int j){
 }
     
 Par peso(int i, int j){
-    //printMatrix(i, j);
     Par ans; ans.peso = 0; ans.items_r = i;
     int choice = m[i][j];
     for(int k = i-1; k >= 0; k--){
-        //printf("%d\n", choice);
         if(choice != m[k][j] and ans.peso + p[k] <= 50)
             {j -= p[k]; choice = m[k][j]; ans.peso += p[k]; ans.items_r--;}
         else
