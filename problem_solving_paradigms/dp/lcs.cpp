@@ -44,15 +44,15 @@ void lcs(){
     for(int i = 1; i <= m; i++){
         for(int j = 1; j <= n; j++){
             if(a[i] == b[j])
-                {table[i][j] = table[i-1][j-1] + 1; values[i][j] = 3;}
+                {table[i][j] = table[i-1][j-1] + 1;} // left + top (diagonal).
             else if(table[i-1][j] >= table[i][j-1])
-                {table[i][j] = table[i-1][j]; values[i][j] = 2;}
+                {table[i][j] = table[i-1][j];} // top.
             else 
-                {table[i][j] = table[i][j-1]; values[i][j] = 1;}
+                {table[i][j] = table[i][j-1];} // left
         }
     }
-}
 
+}
 void printSeq(int m, int n){
     if(m == 0 || n == 0) return;
     printf("(%d %d)\n", m, n);
