@@ -22,7 +22,7 @@ int getMaxCoins(){
     for(int i = 1; i <= x; i++)
         for(int j = 0; j < n; j++)
             if(i - coins[j] >= 0)
-                {dp[i] = min(dp[i], 1 + dp[i - coins[j]]); printf("(%d %d)\n", i, dp[i]);}
+                dp[i] = min(dp[i], 1 + dp[i - coins[j]]);
     return dp[x] != x + 1 ? dp[x] : -1;  
 }
 
