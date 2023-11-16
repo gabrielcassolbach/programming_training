@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
-
 #define MAX 212345
 
 typedef long long ll;
@@ -36,3 +34,5 @@ int main(){
     printf("%lld\n", dp());
     return 0;
 }
+
+
