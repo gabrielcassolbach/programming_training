@@ -5,35 +5,43 @@ using namespace std;
 #define MAX1 1000001
 #define MAX2 101
 
+typedef long long ll;
+
 const int mod = 1e9 + 7;
  
-int n, x;
-int dp[MAX1][MAX2];
+ll n;
+int x, dp[MAX1][MAX2];
 vector<int> v;
- 
+
 int answer(int value, int k){
-    int ans = 0;
-    if(value == 0) 
-        return 1; 
+    ll ans = 0;
+
+    if(value == 0) return 1; 
+    if(dp[value][k] != -1) return dp[value][k]; 
+
     for(int i = k; i <= n; i++)
-        if(value - v[i] >= 0)
+        if(value - v[i] >= 0)       
             ans += answer(value - v[i], i);
-    return ans;
+    
+    dp[value][k] = ans % mod;
+    return dp[value][k];
 }
- 
-void init(){
-    for(int i = 1; i < MAX1; i++)
-        for(int j = 1; j < MAX2; j++)
-            dp[i][j] = -1;
-}
+
  
 void read(){
     cin >> n >> x;
     v.resize(n + 1);
     for(int i = 1; i <= n; i++)
-        cin >> v[i]; 
+        cin >> v[i];
+    sort(v.begin() + 1, v.end(), greater<int>()); 
 }
- 
+
+void init(){
+    for(int i = 1; i <= x; i++)
+        for(int j = 1; j <= n; j++)
+            dp[i][j] = -1;
+}
+
 int main(){
     read();
     init();
@@ -42,4 +50,4 @@ int main(){
     else
         cout << answer(x, 1) << endl;
     return 0;
-}
+}   
