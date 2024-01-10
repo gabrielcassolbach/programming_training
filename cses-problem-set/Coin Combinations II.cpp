@@ -15,7 +15,7 @@ vector<int> v;
 
 int answer(int value, int k){
     ll ans = 0;
-
+    cout << value << k << endl;
     if(value == 0) return 1; 
     if(dp[value][k] != -1) return dp[value][k]; 
 
