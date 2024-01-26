@@ -23,8 +23,11 @@ int main()
             x = l - a[i];
             y = r - a[i];
 
-            upper = upper_bound(a+1+i, a+n, y) - a;
             lower = lower_bound(a+1+i, a+n, x) - a;
+            upper = upper_bound(a+1+i, a+n, y) - a;
+            
+            cout << "x: " << x << " y: " << y << endl;
+            cout << "lwer: " << lower << " upr: " << upper << endl << endl;
 
            cn += abs(upper - lower);
         }
