@@ -6,26 +6,18 @@ using namespace std;
 
 typedef long long ll;
 
-int n;
-int maze[MAX][MAX];
-int dp[MAX][MAX];
+const int mod = 1e9 + 7;
 
-void printMaze(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++)
-            cout << maze[i][j];
-        cout << endl;
-    }
-}
+int n, m[MAX][MAX], dp[MAX][MAX];
 
 void printMemory(){
     for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++)
-            cout << dp[i][j] << "   ";
+        for(int j = 1; j <= n; j++){
+            cout << dp[i][j] << "  ";
+        }
         cout << endl;
     }
 }
-
 
 void init(){
     for(int i = 1; i <= n; i++)
@@ -39,28 +31,42 @@ void read(){
         for(int j = 1; j <= n; j++){
             char c; cin >> c;
             if(c == '.')
-                maze[i][j] = 1;
-            else 
-                maze[i][j] = 0;
+                m[i][j] = 1;
+            else
+                m[i][j] = 0;
         }
-    }     
+    }
 }
 
-ll ans(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++){
-            
+ll moves(){
+    dp[n][n] = m[n][n];
 
-        }              
+    if(!dp[n][n]) return 0;
+
+    for(int i = n; i >= 1; i--){
+        for(int j = n; j >= 1; j--){
+            if(i == n && j == n) continue;
+            
+            if(m[i][j] == 0) continue;
+
+            ll right = 0; ll down = 0;
+            
+            if(j + 1 <= n && dp[i][j+1])
+                right = dp[i][j+1];
+
+            if(i + 1 <= n && dp[i+1][j])
+                down = dp[i+1][j];
+            
+            dp[i][j] = (right + down) % mod;
+        }
     }
-    return dp[n][n];
+    return dp[1][1];
 }
 
 int main(){
     read();
     init();
-    //printMaze();
-    cout << ans() << endl;
-    printMemory();
+    cout << moves() << endl;
+    //printMemory();
     return 0;
 }
