@@ -2,44 +2,35 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define MAX 150
 
 typedef long long ll;
 
-/*
-v = {1, 2, 3, 5, 7};
+int dp[MAX];
 
-(4 % 15) == 4.
-(4 % 10) == 4.
-(4 % 6) == 4.
-(4 % 3) == 1.
-
-13 % 3 = 1.
-
-ans += (13 - (13 % 3)) / 3;
-
-// 5 4 3 2 1.
-// 5 3 2 1.
-// 5 3 1.
-// 5 1.
-
-
-*/
+void dpTable(){
+    int v[] = {1, 3, 6, 10, 15};
+    dp[0] = 0;
+    for(int i = 1; i <= MAX; i++){
+        dp[i] = 12345678;
+        for(int j = 0; j < 5; j++)
+            if(v[j] <= i)
+                {dp[i] = min(dp[i], dp[i - v[j]] + 1);}
+    }
+}
 
 int main(){
     int t; cin >> t;
-    int c[] = {1, 3, 6, 10, 15};     
-
+    dpTable();
     while(t--){
-        ll n; cin >> n;
+        int n; cin >> n;
         ll ans = 0;
-        for(int i = 4; i >= 0; i--){
-            if(c[i] <= n){
-                cout << c[i] << ' '; cout << endl;
-                ans += ((n - (n % c[i])) / c[i]);
-                n = (n % c[i]);
-            }                
-        }
-        cout << ans << endl; 
+        if(n > 140)
+            ans += (n-100)/15 + (dp[(n-100)%15 + 100]);
+        else
+            ans += dp[n];
+        cout << ans << endl;
     }
     return 0;
 }
+
