@@ -17,6 +17,6 @@ int main(){
         if(it != s.end())
             s.erase(it);
     }
-    cout << s.size() << endl;
+    cout << s.size() << endl;-
     return 0;
 }
