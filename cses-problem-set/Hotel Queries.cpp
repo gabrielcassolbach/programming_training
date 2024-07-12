@@ -22,14 +22,18 @@ ll build_seg(int p, int l, int r){
 	return seg[p] = max(build_seg(2*p, l, m), build_seg(2*p + 1, m+1, r));
 }
 
+ll query(ll a, ll b, ll p, ll l, ll r) {
+
+}
+
+void update_seg(){
+	
+}
+
 void answer(){
 	for(int i = 1; i <= m; i++){
-		// para cada consulta:
-		// realiza uma busca na árvore de segmentos de custo 0(logn)
-		// essa busca sempre prioriza os elementos que estão nos ramos da
-		// esquerda da árvore. 
-		// imprima o nó.
-		// após o nó ser utilizado, modifique o valor do nó utilizado para -1.
+		cout << hotel(1, g[i]) << endl;
+		update_seg();
 	}
 }
 
@@ -39,6 +43,4 @@ int main(){
         answer();
 	return 0;
 }
-
-
 
