@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define MAX 504
 
-/*brute-force approach*/
+#define MAX 512
+#define MAX2 51234
+
+/*dynamic-programming approach */
 
 typedef long long ll;
 
@@ -18,8 +20,10 @@ struct sapato {
 	ll d;
 };
 
+vector<k_peia> v_ax;
 k_peia v[MAX];
 sapato a[MAX]; 
+ll m[MAX][MAX2];
 int n, t;
 
 void read(){
@@ -30,27 +34,30 @@ void read(){
 		cin >> a[i].e >> a[i].d;	
 }
 
-ll best_choice(int i, ll lim){
-	vector<k_peia> v_ax; 
-	for(int j = 1; j <= n; j++)
+ll pd(ll item, ll lim){
+	if(!item or !lim)
+		{m[item][lim] = 0; return m[item][lim];}
+	if(m[item][lim] != -1)
+		{return m[item][lim];} 
+	if(lim < (v_ax[item-1].k/2))
+		{m[item][lim] = pd(item-1, lim);}
+	else
+		{m[item][lim] = max(pd(item-1, lim), pd(item-1, lim-(v_ax[item-1].k/2)) + v_ax[item-1].m);}
+	return m[item][lim];
+}
+
+ll best_choice(int i, ll lim){ 
+	v_ax.clear();
+	for(int j = 0; j <= n; j++){
 		if(v[j].t == i) v_ax.push_back(v[j]);
-		
-	sort(v_ax.begin(), v_ax.end(), [](k_peia& one, k_peia& two){return one.k < two.k;}); 
-	ll best_choice = 0; int j = 0;
-	while(j < n){
-		ll choice = 0; ll aux_lim = lim;
-		for(int l = j; l < v_ax.size(); l++){
-			if(v_ax[l].k/2 <= aux_lim){
-				aux_lim -= v_ax[l].k/2;
-				choice += v_ax[l].m;
-			} 
-		}
-		best_choice = max(best_choice, choice);
-		j++;
-	}	
-			
-    v_ax.clear();	
-	return best_choice;
+	}
+	return pd(v_ax.size(), lim);
+}
+
+void init_memo(){
+	for(int i = 0; i < MAX; i++)
+		for(int j = 0; j < MAX2; j++)
+			m[i][j] = -1;
 }
 
 void answer(){
@@ -65,6 +72,7 @@ void answer(){
 
 int main(){
 	read();
+	init_memo();
 	answer();
 	return 0;
 }
