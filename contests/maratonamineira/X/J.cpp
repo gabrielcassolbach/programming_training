@@ -21,6 +21,7 @@ struct sapato {
 };
 
 vector<k_peia> v_ax;
+vector<pair<ll, ll>> g; 
 k_peia v[MAX];
 sapato a[MAX]; 
 ll m[MAX][MAX2];
@@ -35,6 +36,7 @@ void read(){
 }
 
 ll pd(ll item, ll lim){
+	g.push_back({item, lim});
 	if(!item or !lim)
 		{m[item][lim] = 0; return m[item][lim];}
 	if(m[item][lim] != -1)
@@ -46,8 +48,15 @@ ll pd(ll item, ll lim){
 	return m[item][lim];
 }
 
+void garbage_colector(){
+	for(int i = 0; i < g.size(); i++)
+		m[g[i].first][g[i].second] = -1;
+	g.clear();
+}
+
 ll best_choice(int i, ll lim){ 
 	v_ax.clear();
+	garbage_colector();
 	for(int j = 0; j <= n; j++){
 		if(v[j].t == i) v_ax.push_back(v[j]);
 	}
@@ -76,5 +85,3 @@ int main(){
 	answer();
 	return 0;
 }
-
-
