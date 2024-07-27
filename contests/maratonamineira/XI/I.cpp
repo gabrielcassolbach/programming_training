@@ -2,7 +2,7 @@
 using namespace std;
 
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define MAX 212345
+#define MAX 20
 
 typedef long long ll;
 
@@ -37,16 +37,6 @@ void make_crivo() {
 			}
 		}
 	}
-}
-
-void debug_crivo(){
-	for(int i = 0; i < MAX; i++){
-		cout << i << ": ";
-		for(int j = 0; j < crivo[i].size(); j++){
-			cout << crivo[i][j] << " ";
-		}
-		cout << endl;
-	}	
 }
 
 ll solve() {
