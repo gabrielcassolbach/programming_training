@@ -5,7 +5,24 @@ using namespace std;
 
 typedef long long ll;
 
+vector<ll> v; 
+ll n;
+
+void read() {
+	cin >> n; 
+	v.resize(n + 3); 
+	for(int i = 0; i < n; i++) cin >> v[i];	
+}
+
+void solve(){
+	
+
+}
+
 int main() { _
-	ll n; cin >> n;
+	read();
+	solve();
 	return 0;
 }
+
+
