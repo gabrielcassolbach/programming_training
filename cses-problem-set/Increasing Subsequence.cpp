@@ -22,7 +22,7 @@ ll lis(vector<ll> const& a, ll n) {
 		cout << d[l] << " ";
 	cout << endl;
 
-	ll ans = 0;
+	ll ans = 0; 
 	for(int l = 0; l <= n; l++)
 		if(d[l] < INF)
 			ans = l;
