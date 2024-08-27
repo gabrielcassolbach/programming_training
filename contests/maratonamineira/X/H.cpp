@@ -1,59 +1,45 @@
 #include <bits/stdc++.h>
+
 using namespace std;
-
 #define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define MAX 21
 
-/*
-pega a visão.
- f f g g h 	
-{qtd_impares, qtd_pares}
-
-memo -> [{1, 0}, {0, 1}, {}, {}, {}]
-
-for(int i = 2; i <= n; i++){
-	ans++; // garantindo que há pelo menos mais um palíndromo.
-	quantos palíndromos são gerados após a adição 
-
-}
-
-f f g g h
-
-N    1    2    3    4    5
-PP   0    1    0    2    0
-PI   1    1    2    2    3
-
-Ul-> é o que?
-
-
-PI(n) = 1 + (PI(Ul(n) - 1)) + PP(n - 1)    , se a letra ja apareceu
-      = 1 + PP(n - 1)                      , se a letra ainda nao apareceu
-PP(n) = PP(Ul(n) - 1) + 1                  , se a letra ja apareceu
-	  = 0                                  , se a letra ainda nao apareceu
-
-
-*/
-
+#define MAX (1 << 20) + 10
 typedef long long ll;
 
-ll n;
-vector<char> v; vector<pair<int, int>> memo;
-int alfabet[MAX];
+int val[26];
+int qt[MAX];
 
-void read(){
-	cin >> n;
-	v.resize(n + 3); 
-	for(int i = 1; i <= n; i++) cin >> v[i];
-}
+int main(){ _
+	int at = 0;
 
-void init(){
-	for(int i = 0; i < MAX; i++) alfabet[i] = 0;
-	memo.resize(n + 3);
-}
+	for (char c = 'a'; c <= 'z'; c++)
+	{
+		if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y') continue;
+		val[c - 'a'] = at++;
+	}
 
-int main(){
-	read();
-	init();
+	ll n; cin >> n; 
+	string s; cin >> s;
+	
+	qt[0] = 1;
+	int mask = 0;
+	ll ans = 0;
+
+	for (int i = 0; i < n; i++)
+	{
+		mask ^= (1 << val[(s[i] - 'a')]);
+		ans += qt[mask];
+		for (int j = 0; j < 20; j++)
+		{
+			ans += qt[mask ^ (1 << j)];
+		}
+		qt[mask]++;
+	}
+
+	cout << ans << endl;
 
 	return 0;
 }
+
+
+/* 10100 */
