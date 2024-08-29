@@ -6,12 +6,6 @@ using namespace std;
 typedef long long ll;
 ll n; vector<ll> v;  
 
-/*
-n -> 10⁶
-pi -> 10⁹
-
-*/
-
 int main() { _
     cin >> n; v.resize(n);
     for(int i = 0; i < n; i++) cin >> v[i];
