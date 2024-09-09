@@ -1,53 +1,28 @@
+// https://usaco.guide/problems/cses-1636-coin-combinations-ii-ordered/solution
 #include <bits/stdc++.h>
 using namespace std;
- 
-#define _ ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define MAX1 1000001
-#define MAX2 101
+
+#define _ ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+#define MAX 1123456
 
 typedef long long ll;
 
-const int mod = 1e9 + 7;
- 
-ll n;
-int x, dp[MAX1][MAX2];
-vector<int> v;
+const int mod = (int)1e9 + 7;
+ll n, x; 
+ll dp[MAX];
 
-int answer(int value, int k){
-    ll ans = 0;
-    cout << value << k << endl;
-    if(value == 0) return 1; 
-    if(dp[value][k] != -1) return dp[value][k]; 
-
-    for(int i = k; i <= n; i++)
-        if(value - v[i] >= 0)       
-            ans += answer(value - v[i], i);
-    
-    dp[value][k] = ans % mod;
-    return dp[value][k];
+int main() { _
+	cin >> n >> x; vector<ll> coins(n + 10);
+	for(int i = 0; i < n; i++) cin >> coins[i];
+	dp[0] = 1;
+	for(int i = 0; i < n; i++){
+		for(int weight = 0; weight <= x; weight++){
+			if(weight - coins[i] >= 0){
+				dp[weight] += dp[weight - coins[i]];
+				dp[weight] %= mod;
+			}
+		}
+	}
+	cout << dp[x] << '\n';
+	return 0;
 }
-
- 
-void read(){
-    cin >> n >> x;
-    v.resize(n + 1);
-    for(int i = 1; i <= n; i++)
-        cin >> v[i];
-    sort(v.begin() + 1, v.end(), greater<int>()); 
-}
-
-void init(){
-    for(int i = 1; i <= x; i++)
-        for(int j = 1; j <= n; j++)
-            dp[i][j] = -1;
-}
-
-int main(){
-    read();
-    init();
-    if(n == 1 && v[1] <= x)
-        cout << 1 << endl;
-    else
-        cout << answer(x, 1) << endl;
-    return 0;
-}   
