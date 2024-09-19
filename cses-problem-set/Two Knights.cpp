@@ -1,14 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int k;
+#define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+
+typedef long long ll;
+
+int solve(ll n) {
+	if(n == 0) return 0;
+	
+	
+}
+
 
 int main(){
-    scanf("%d", &k);
-    for(int i = 1; i < k; i++){
-        
-
-    }
-
+   	fastio;
+	ll n; cin >> n;
+	solve(n);
     return 0;
 }
