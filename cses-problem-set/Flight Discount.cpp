@@ -9,100 +9,57 @@ typedef long long ll;
 
 const ll INF = 1e17 + 10;
 
-vector<vector<ii>> graph, opp_graph;
+vector<vector<ii>> graph;
 vector<ll> path;
 vector<bool> vis;
-vector<ll> distances;
-priority_queue<ii> q;
+vector<ll> disc, full;
+ll nbour;
 ll n, m;
 
 void read() {
 	cin >> n >> m;
-	graph.resize(n + 10); opp_graph.resize(n + 10);
+	graph.resize(n + 10); 
 	while(m--){
 		ll a, b, c; cin >> a >> b >> c;
 		graph[a].pb({c, b});
-		opp_graph[b].pb({c, a});
+		if(b == n) nbour = a;
 	}
 }
 
 void init() {
 	vis.resize(n + 10, false);
-	distances.resize(n + 10, INF);
+	disc.resize(n + 10, INF);
+	full.resize(n + 10, INF);
 }
 
-void dijkstra() {
-	distances[1] = 0;
-	q.push({0, 1}); 
-	while(!q.empty()){
-	 	ii edge = q.top(); q.pop();
-		ll node = edge.second; ll cost = edge.first;
-		if(vis[node]) continue;
-		cout << "node " << node << '\n';
-		vis[node] = true; 
-		for(auto u : graph[node]) {
-			ll b = u.second; ll w = u.first;
-			if(distances[node] + w < distances[b]) {
-				distances[b] = distances[node] + w;
-				q.push({-distances[b], b});
-			}
-		}
-	}
-}
-
-void solve(ll node){
-	cout << node  << '\n';
-	vis[node] = true;
-	if(node == 1) return ;
-	ll next_node = -1; ll m_dist = INF;
-	for(auto u : opp_graph[node]) {
-		if((distances[u.second] < m_dist) && !vis[u.second]) {
-			m_dist = distances[u.second];
-			next_node = u.second;
-		}		
-	}
-	if(next_node != -1){
-		path.pb(abs(m_dist));
-		return solve(next_node);
-	}
-	return;
-}
-
-ll answer() {
-	ll ans = 0; vector<ll> choices;
-	
-	for(int i = 1; i < path.size(); i++) 
-		choices.pb(abs(path[i] - path[i-1]));
-	
-	sort(choices.begin(), choices.end());
-	int i;
-	if(choices.size() == 0) return ans; 
-	for(i = 0; i < choices.size() - 1; i++) 
-		ans += choices[i];
-
-	ans += floor(choices[i]/2);
-	return ans;
-}
-
-void debug() {
-	for(int i = 0; i <= distances.size(); i++) cout << distances[i] << " ";
-	cout << '\n';
-}
-
-
-int main() {
-	read(); init();
-	dijkstra();
-	for(int i = 1; i <= n; i++) vis[i] = false;
-	path.pb(distances[n]); solve(n);
-	cout << answer() << '\n';	
-	//debug();
+int inNbors(ll value) {
+	if(value == nbour) {nbour = -1; return 1; }
 	return 0;
 }
 
+ll dijkstra() {
+	priority_queue<ii> q;
+	disc[1] = full[1] = 0;
+	q.push({0, 1});
+	while(!q.empty()) {
+		ll pt = q.top().second; q.pop();
+		if(vis[pt] && !inNbors(pt)) continue;
+		vis[pt] = true;
+		for (auto u : graph[pt]) {
+			ll v = u.second; ll w = u.first;
+			disc[v] = min(disc[v], min(disc[pt] + w, full[pt] + w/2));
+			full[v] = min(full[v], full[pt] + w);
+			q.push({-min(disc[v], full[v]), v});
+		}	
+	}
 
-
-
-
+	return disc[n];
+}
+	
+int main() {
+	read(); init();
+	cout << dijkstra() << '\n';
+	return 0;
+}
 
 
