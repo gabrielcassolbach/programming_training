@@ -4,23 +4,25 @@ using namespace std;
 typedef long long ll;
 
 #define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-#define pair<ll, ll> ii
+#define ii pair<ll, ll>
 
 const ll mod = 1e9 + 7;
 
-ll n; 
-vector<ll> a;
+ll n; vector<ll> v;
 
-void read() {
-	cin >> n; a.resize(n + 10);
-	for(int i = 1; i <= n; i++)
-		a[i] = i;
-}	
+/*
+
+1 2 3 4 5 6 7
+
+1 
+
+ */
+
 
 int main() {
-	read();
-		
-
-
+	fastio;
+	
 	return 0;
 }
+
+
