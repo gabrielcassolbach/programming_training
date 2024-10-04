@@ -6,25 +6,37 @@ using namespace std;
 
 typedef long long ll;
 
-vector<string> _a, _b;
+vector<string> ans;
 
-/*
-000
-001
-011
-010
-110
-111
-101
-100
-*/
+void duplicate() {
+	for(int j = ans.size()-1; j >= 0; j--) 
+		ans.pb(ans[j]);
+}
 
+void append_zeros() {
+	for(int j = 0; j < ans.size()/2; j++)
+		ans[j] = "0" + ans[j];
+}
+
+void append_ones(){
+	for(int j = ans.size()/2; j < ans.size(); j++)
+		ans[j] = "1" + ans[j];
+}
+
+void solve(ll n) {
+	for(int i = 2; i <= n; i++){
+		duplicate();
+		append_zeros();
+		append_ones();
+	}
+}
 
 int main() {
 	fastio;
-	ll n; cin >> n; 
-	cout << (n >> 1) << '\n';
-	//cout << g(3) << '\n';
+	ll n; cin >> n;
+	ans.pb("0"); ans.pb("1"); solve(n);
+	for(int i = 0; i < ans.size(); i++) 
+		cout << ans[i] << "\n";
 	return 0;
 }
 
