@@ -5,13 +5,16 @@ using namespace std;
 
 typedef long long ll;
 
+string ans(ll a, ll b) {
+    
+}
+
 int main() {
 	fastio;
 	int t; cin >> t;
 	while(t--) {
 		ll a, b; cin >> a >> b;
-							
-	
+	    cout << ans(a, b) << '\n';         
 	}
 	return 0;
 }
