@@ -6,7 +6,10 @@ using namespace std;
 typedef long long ll;
 
 string ans(ll a, ll b) {
-    
+	if(a == 0 && b == 0) return "YES";
+	if(a == 0 || b == 0) return "NO";
+	if(min(a,b)*2 < max(a,b)) return "NO";
+	return !((a+b)%3) ? "YES" : "NO";
 }
 
 int main() {
