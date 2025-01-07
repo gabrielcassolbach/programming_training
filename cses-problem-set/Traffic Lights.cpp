@@ -4,39 +4,44 @@ using namespace std;
 typedef long long ll;
  
 #define fastio ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
-#define in insert 
+#define in insert
 
-ll n, x, a, b; 
-vector<ll> v;
-set<ll> v; 
+multiset<ll> mts;
+set<ll> s;
 
-bool interval(ll b, ll xi) {
-		
+ll n, x;
 
+void init_sets() {
+	s.in(0); s.in(x);
+	mts.in(x-0);
 }
 
-ll solve(ll xi) {
-	
+void debug_mts() {
+	cout << "debugging: ";
+	for(auto it = mts.begin(); it != mts.end(); it++)
+		cout << (*it) << " ";
+	cout << '\n';
+}
 
+void solve() {
+	cin >> x >> n;
+	init_sets();
+	while(n--) {
+		ll val; cin >> val;
+		s.in(val);
+		auto it = s.find(val); 		
+		int prev_elem = *prev(it); int next_elem = *next(it);
+		mts.erase(mts.find(next_elem - prev_elem));
+		mts.in(val - prev_elem); mts.in(next_elem - val); 
+		//debug_mts(); 
+		cout << *mts.rbegin() << " ";
+	} 
+	cout << '\n';
+}	
 
-}
- 
-void read() {
-	cin >> x >> n; v.resize(n + 10);
-	for(int i = 1; i <= n; i++) cin >> v[i];
-}
- 
-void answer() {
-	a = 0; b = x;
-	for(int i = 1; i <= n; i++)
-		cout << solve(v[i], a, b) << "\n";
-	cout << '\n'; 
-}
- 
 int main() {
 	fastio;
-	read();
-	answer();
+	solve(); 
 	return 0;
 }
  
