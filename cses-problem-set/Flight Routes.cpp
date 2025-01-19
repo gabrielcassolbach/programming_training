@@ -8,14 +8,18 @@ using namespace std;
 
 typedef long long ll; 
 
-const ll INF = 1e9 + 10; 
+const ll INF = 1e14 + 10; 
 
 ll n, m, k;
-vector<vector<pair<int, ll>>> g;
-priority_queue<pair<ll, int>> q;
-vector<ll> dist;
-vector<bool> vis; 
-multiset<ll> ans; 
+vector<vector<pair<ll, ll>>> g;
+
+priority_queue < 
+	pair<ll, ll>,
+	vector<pair<ll, ll>>,
+	greater<pair<ll, ll>> 
+> pq;
+
+vector<vector<ll>> dist; 
 
 void read() {
 	cin >> n >> m >> k;
@@ -24,32 +28,41 @@ void read() {
 		ll a, b, c; cin >> a >> b >> c;  
 		g[a].pb({b, c});
 	}
-	dist.resize(n + 10, INF); 
-	vis.resize(n + 10, false); 
+	dist.resize(n + 10);
+	for(int i = 1; i <= n; i++){
+		for(int j = 0; j < k; j++)
+			dist[i].pb(INF);
+	}
 }
 
 void dijkstra() {
-	dist[1] = 0;
-	q.push({0, 1});
-	while(!q.empty()) {
-		int a = q.top().s; q.pop();
-		if(vis[a]) continue; vis[a] = true;
-		for(auto u : g[a]){
-			if(u.f == n && dist[a] + u.s != INF) ans.insert(dist[a] + u.s);
-			if(dist[a] + u.s < dist[u.f]){
-				dist[u.f] = dist[a] + u.s;
-				q.push({-dist[u.f], u.f});
-			}	
+	pq.push({0, 1});
+
+	while(!pq.empty()) {
+		ll u = pq.top().s; 
+		ll d = pq.top().f;
+		
+		pq.pop();
+		if(dist[u][k-1] < d) continue; 
+	
+		for(auto e: g[u]) {
+			if(dist[e.f][k-1] > e.s+d){
+				dist[e.f][k-1] = e.s+d;
+				pq.push({dist[e.f][k-1], e.f}); 	
+				sort(dist[e.f].begin(), dist[e.f].end());		
+			}							
 		}
 	}
-
 }
 
 int main() {
 	fastio;
 	read();
 	dijkstra();
-	for(auto it = ans.begin(); it != ans.end(); it++) cout << *it << '\n';
+	for(auto ans : dist[n]) cout << ans << ' ';
+	cout << '\n';
 	return 0;
 }
+
+
 
