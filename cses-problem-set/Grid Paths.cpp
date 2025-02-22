@@ -1,17 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+ 
 typedef long long ll;
-
-#define fastio ios_base::sync_with_stdio(false); cin.tie(0); 
-
+ 
+#define fastio ios_base::sync_with_stdio(false); cin.tie(0);  
+ 
 string s;
 ll ans; 
 int dr[] = {-1, 0, 1, 0};
 int dc[] = {0, 1, 0, -1}; 
 char pos[] = {'U', 'R', 'D', 'L'}; 
 int m[9][9]; // 7x7 grid plus border.  
-
+ 
 int f_dir(char c) {
 	int id = 0;
 	for(int i = 0; i < 4; i++)
@@ -19,39 +19,54 @@ int f_dir(char c) {
 			id = i;
 	return id;  	
 }
-
+ 
 int out_grid(int x, int y) {
 	if(x <= 0 || y <= 0) return 1; 
 	if(x >= 8 || y >= 8) return 1; 
 	return 0; 
 }
 
+void print_map() {
+	for(int i = 0; i < 9; i++){
+		for(int j = 0; j < 9; j++)	
+			cout << m[i][j];
+		cout << '\n'; 
+	}
+}
+ 
 int split_grid(int x, int y) {
 	int l = m[x+dr[3]][y+dc[3]];
 	int r = m[x+dr[1]][y+dc[1]];
 	int d = m[x+dr[2]][y+dc[2]];
 	int u = m[x+dr[0]][y+dc[0]]; 
-
-	if(!r && !l && u && d)
+ 
+	if((!r && !l) && (u && d)) {
+		//cout << x << " " << y << '\n';
+		//print_map();
+		//m[x][y] = 1;
 		return 1; 
-	if(!u && !d && r && l)
+	}if((!u && !d) && (r && l)){
+		//cout << x << " " << y << '\n';
+		//print_map();
+		//m[x][y] = 1; 
 		return 1;
+	}
 	return 0; 
 }
-
+ 
 int stop(int i, int x, int y) {
-	if(out_grid(x, y) || m[x][y]) return 1; 
-	if(i != 48 && x == 7 && y == 1) return 1; 
-	if((i == 48 && x != 7) || i > 48) return 1;
+	if(out_grid(x, y) || m[x][y]) return 1; 	
 	if(split_grid(x, y)) return 1;
+	if(i == 48 && (x != 7 || y != 1)) return 1; 
+	if((x == 7 && y == 1) && i != 48) return 1; 
 	return 0;  
 }
-
+ 
 void solve(int i, int x, int y) {
 	if(stop(i, x, y)) return; 
-	if(i == 48 && x == 7 && y == 1) {ans++; return;}	
+	if(i == 48 && x == 7 && y == 1) {ans++; return;}
 	
-	m[x][y] = 1; 
+	m[x][y] = 1;  
 
 	if(s[i] == '?') {
 		for(int j = 0; j < 4; j++)
@@ -60,10 +75,10 @@ void solve(int i, int x, int y) {
 		int j = f_dir(s[i]); 
 		solve(i+1, x + dr[j], y + dc[j]); 
 	}
-
+ 
 	m[x][y] = 0; 
 }
-
+ 
 void set_var() {
 	for(int i = 0; i < 9; i++)
 		for(int j = 0; j < 9; j++)
@@ -74,7 +89,7 @@ void set_var() {
 	}
 	ans = 0; 
 }
-
+ 
 int main() {
 	fastio;
 	set_var();
@@ -83,5 +98,4 @@ int main() {
 	cout << ans << '\n';
 	return 0;
 }
-
-
+ 
