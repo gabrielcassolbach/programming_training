@@ -5,32 +5,9 @@ using namespace std;
 
 typedef long long ll; 
 
-/* 
-we have 5 values and the limit k is 10.
--> 7 79 1 7 1
-
-
-
-
-
-
-we have 3 possible solutions: {1, 2, 5}.
-
-
-
-
-
-
-
-*/
-
-
 int main() {
 	fastio;
-	int t; cin >> t;
-       	while(t--) {
+	
 
-
-	}		
 	return 0;
 }

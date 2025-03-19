@@ -1,101 +1,66 @@
 #include <bits/stdc++.h>
-using namespace std;
+using namespace std; 
  
-typedef long long ll;
+#define fastio ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); 
+#define MAX 9
+#define f first
+#define s second 
  
-#define fastio ios_base::sync_with_stdio(false); cin.tie(0);  
- 
+// {down, right, left, up}
+int dr[] = {1, 0, 0, -1};
+int dc[] = {0, 1, -1, 0};
+int c[] = {'D', 'R', 'L', 'U'};
+int grid[MAX][MAX]; 
+int ans;
 string s;
-ll ans; 
-int dr[] = {-1, 0, 1, 0};
-int dc[] = {0, 1, 0, -1}; 
-char pos[] = {'U', 'R', 'D', 'L'}; 
-int m[9][9]; // 7x7 grid plus border.  
  
-int f_dir(char c) {
-	int id = 0;
-	for(int i = 0; i < 4; i++)
-		if(c == pos[i]) 
-			id = i;
-	return id;  	
+int split_grid(int it, int i, int j) {
+  int r = grid[i][j+1]; int l = grid[i][j-1];
+  int u = grid[i-1][j]; int d = grid[i+1][j];
+ 
+  if(!r && !l && u && d) return 1; 
+  if(!u && !d && r && l) return 1;  
+  //if(d && r && !grid[i+1][j+1]) return 1;
+  //if(d && l && !grid[i+1][j-1]) return 1;
+  //if(u && l && !grid[i-1][j-1]) return 1;
+  //if(u && r && !grid[i-1][j+1]) return 1;
+ 
+  return 0;
 }
  
-int out_grid(int x, int y) {
-	if(x <= 0 || y <= 0) return 1; 
-	if(x >= 8 || y >= 8) return 1; 
-	return 0; 
-}
-
-void print_map() {
-	for(int i = 0; i < 9; i++){
-		for(int j = 0; j < 9; j++)	
-			cout << m[i][j];
-		cout << '\n'; 
-	}
-}
- 
-int split_grid(int x, int y) {
-	int l = m[x+dr[3]][y+dc[3]];
-	int r = m[x+dr[1]][y+dc[1]];
-	int d = m[x+dr[2]][y+dc[2]];
-	int u = m[x+dr[0]][y+dc[0]]; 
- 
-	if((!r && !l) && (u && d)) {
-		//cout << x << " " << y << '\n';
-		//print_map();
-		//m[x][y] = 1;
-		return 1; 
-	}if((!u && !d) && (r && l)){
-		//cout << x << " " << y << '\n';
-		//print_map();
-		//m[x][y] = 1; 
-		return 1;
-	}
-	return 0; 
-}
- 
-int stop(int i, int x, int y) {
-	if(out_grid(x, y) || m[x][y]) return 1; 	
-	if(split_grid(x, y)) return 1;
-	if(i == 48 && (x != 7 || y != 1)) return 1; 
-	if((x == 7 && y == 1) && i != 48) return 1; 
-	return 0;  
-}
- 
-void solve(int i, int x, int y) {
-	if(stop(i, x, y)) return; 
-	if(i == 48 && x == 7 && y == 1) {ans++; return;}
-	
-	m[x][y] = 1;  
-
-	if(s[i] == '?') {
-		for(int j = 0; j < 4; j++)
-			solve(i+1, x + dr[j], y + dc[j]); 
-	} else {
-		int j = f_dir(s[i]); 
-		solve(i+1, x + dr[j], y + dc[j]); 
-	}
- 
-	m[x][y] = 0; 
-}
- 
-void set_var() {
-	for(int i = 0; i < 9; i++)
-		for(int j = 0; j < 9; j++)
-			m[i][j] = 0; 
-	for(int i = 0; i < 9; i++) {
-		m[i][0] = m[0][i] = 1;
-		m[8][i] = m[i][8] = 1; 
-	}
-	ans = 0; 
+int solve(int it, int i, int j) {
+  if(split_grid(it, i, j)) return 0;
+  if(i == 7 && j == 1) {
+    if(it == 48) return 1; 
+    return 0;
+  }  
+  if(it == 48) return 0; 
+  int ans = 0;
+  
+  grid[i][j] = 1;  
+  for(int k = 0; k < 4; k++) {
+    if(!grid[i + dr[k]][j + dc[k]] && (s[it] == '?' || s[it] == c[k]))
+      ans += solve(it + 1, i + dr[k], j + dc[k]);
+  } 
+  
+  grid[i][j] = 0; 
+  return ans;
 }
  
 int main() {
-	fastio;
-	set_var();
-	cin >> s;
-	solve(0, 1, 1);
-	cout << ans << '\n';
-	return 0;
+  fastio; 
+   cin >> s;
+  for(int i = 0; i < MAX; i++){
+    grid[i][0] = grid[0][i] = 1;
+    grid[8][i] = grid[i][8] = 1; 
+  } 
+  for(int i = 1; i <= 7; i++)
+    for(int j = 1; j <= 7; j++)
+      grid[i][j] = 0;
+  ans = solve(0, 1, 1);
+  cout << ans << '\n';
+  return 0; 
 }
+
+
  
