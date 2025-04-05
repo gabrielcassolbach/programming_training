@@ -8,6 +8,7 @@ typedef long long ll;
 int main(){
     fastio;
 
+
     return 0;
 }
 
