@@ -32,8 +32,8 @@ int main() {
         cin >> x1 >> y1 >> x2 >> y2;
         ll p1 = boundary_pos(x1, y1);
         ll p2 = boundary_pos(x2, y2);
-        if(p1 >= 0 && p2 >= 0){
-            valid_pairs.push_back({p1, i});
+        if(p1 >= 0 && p2 >= 0){ // adicione caso estejam na borda. 
+            valid_pairs.push_back({p1, i}); 
             valid_pairs.push_back({p2, i});
         }
     }
