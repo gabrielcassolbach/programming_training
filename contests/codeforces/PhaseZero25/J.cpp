@@ -2,29 +2,45 @@
 using namespace std;
 
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0);
+#define s second 
+#define f first
 
-int n, k; 
-vector<int> v; 
-// map. 
+typedef long ll;
+
+ll n, k; 
+vector<ll> v, ans;
+vector<pair<ll, int>> aux_v; 
+
+bool comp(pair<ll, int> &a1, pair<ll, int> &a2){
+    return a1.f > a2.f; 
+}
 
 void read() {
     cin >> n >> k;  
-    v.resize(n + 1);
-    for(int i = 0; i < n; i++)
+    v.resize(n); aux_v.resize(n);
+    for(int i = 0; i < n; i++){
         cin >> v[i];
-    v[n+1] = -1;
+        aux_v[i] = {v[i], i};
+    }
+    sort(aux_v.begin(), aux_v.end(), comp);
 }
 
 int main() {
     fastio;
     read();
+    ans.resize(n, -1);
     for(int i = 0; i < n; i++){
-        int j = (i + 1);
-        while (v[i] + k * (j-i) <= v[j%n]) {
-            j++;
+        int idx = aux_v[i].s;
+        int x = (idx + 1)%n;
+        ll sum = v[idx]+k;
+        while(sum <= v[x]) {
+            sum += k*((n+ans[x]-x)%n);
+            x = ans[x];
         }
-        cout << (j%n + 1) << " ";
+        ans[idx] = x;
     }
+    for(int i = 0; i < n; i++)
+        cout << ans[i] + 1 << " ";
     cout << '\n';
     return 0; 
 }
