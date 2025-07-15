@@ -5,42 +5,63 @@ using namespace std;
 
 typedef long long ll;
 
-struct store {
-    ll x;
-    ll v;
+struct product {
+    bool available; 
+    ll pos;
+    ll val;
 };
 
 ll n, d;
-vector<store> v; 
-vector<int> vis; 
+vector<product> v;
 
-ll rec(int it, int pos_lc) {
-    if(it == n) return 0;
-    cout << "it: " << it << '\n';
-    bool canpick = pos_lc == -1 ? true : (v[it].x - pos_lc <= d);
+bool comp(product p1, product p2){
+    return p1.pos < p2.pos; 
+}
 
-    ll choice1 = canpick ? rec(it + 1, v[it].x) + v[it].v : 0;
-    ll choice2 = rec(it + 1, pos_lc);
+void read(){
+    cin >> n >> d; 
+    v.resize(n); 
+    for(int i = 0; i < n; i++){
+        ll a, b; cin >> a >> b;
+        v[i] = {true, a, b};
+    }
+    sort(v.begin(), v.end(), comp);
+}
 
-    if(choice1 > choice2)
-        {return choice1;}
-    else
-        {return choice2;}
+ll two_pointers(pair<int, int> &sol){
+    int i, j = 0;
+    ll bestsum = 0, sum = v[i].val;
+    for(i = 0; i < n; i++){
+        while(j+1 < n && v[j+1].pos - v[i].pos <= d){
+            sum += v[j+1].val;
+            j++;
+            cout << "i: " << i << '\n';
+            cout <<  "j: " << j + 1 << '\n';
+            cout << "sum: " << sum << '\n';
+        }
+        if(sum > bestsum){
+            sol.first = i; sol.second = j;
+            bestsum = sum;
+        }
+        sum -= v[i].val;
+    }
+    return bestsum;
 }
 
 int main(){
     fastio;
-    cin >> n >> d; 
-    v.resize(n); vis.resize(n, 0);
+    read();
+    
+    pair<int, int> sol1, sol2;
+    ll d_man1 = two_pointers(sol1);
+    cout << "sum1: " << d_man1 << '\n';
 
-    for(int i = 0; i < n; i++){
-        ll xi, vi; cin >> xi >> vi;
-        v[i] = {xi, vi};
-    }
+    /*
+    for(int i = sol1.first; i <= sol1.second; i++)
+        {v[i].available = false;}
 
-    cout << rec(0, -1) << '\n';
-    for(int i = 0; i < n; i++) cout << vis[i] << ' ';
-    cout << '\n';
+    cout << d_man1 + two_pointers(sol2) << '\n';
+    */
     return 0;
 }
 
