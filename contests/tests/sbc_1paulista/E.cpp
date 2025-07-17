@@ -3,65 +3,46 @@ using namespace std;
 
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0);
 
-typedef long long ll;
-
 struct product {
-    bool available; 
-    ll pos;
-    ll val;
+    int pos; 
+    int val;
 };
 
-ll n, d;
-vector<product> v;
-
 bool comp(product p1, product p2){
-    return p1.pos < p2.pos; 
-}
-
-void read(){
-    cin >> n >> d; 
-    v.resize(n); 
-    for(int i = 0; i < n; i++){
-        ll a, b; cin >> a >> b;
-        v[i] = {true, a, b};
-    }
-    sort(v.begin(), v.end(), comp);
-}
-
-ll two_pointers(pair<int, int> &sol){
-    int i, j = 0;
-    ll bestsum = 0, sum = v[i].val;
-    for(i = 0; i < n; i++){
-        while(j+1 < n && v[j+1].pos - v[i].pos <= d){
-            sum += v[j+1].val;
-            j++;
-            cout << "i: " << i << '\n';
-            cout <<  "j: " << j + 1 << '\n';
-            cout << "sum: " << sum << '\n';
-        }
-        if(sum > bestsum){
-            sol.first = i; sol.second = j;
-            bestsum = sum;
-        }
-        sum -= v[i].val;
-    }
-    return bestsum;
+    return p1.pos < p2.pos;
 }
 
 int main(){
-    fastio;
-    read();
-    
-    pair<int, int> sol1, sol2;
-    ll d_man1 = two_pointers(sol1);
-    cout << "sum1: " << d_man1 << '\n';
+    fastio; 
+    int n, d; 
+    cin >> n >> d;
 
-    /*
-    for(int i = sol1.first; i <= sol1.second; i++)
-        {v[i].available = false;}
+    vector<product> v;
+    for(int i = 0; i < n; i++){
+        int a, b; cin >> a >> b;    
+        v.push_back({a, b});
+    }
 
-    cout << d_man1 + two_pointers(sol2) << '\n';
-    */
+    sort(v.begin(), v.end(), comp);
+    for(int i = 0; i < v.size(); i++) cout << v[i].pos << " ";
+    vector<int> sums; 
+
+    int i, j = 1;
+    int sum = v[0].val;
+    for(i = 0; i < n; i++){
+        while(j < n && v[j].pos - v[i].pos <= d){
+            sum += v[j++].val;   
+        }
+        sums.push_back(sum);
+        sum -= v[i].val;
+    }
+
+    sort(sums.begin(), sums.end(), greater<int>());
+    for(int i = 0; i < sums.size(); i++) cout << sums[i] << " ";
+
+    if(sums.size() > 1)
+        cout << sums[0] + sums[1] << '\n';
+    else 
+        cout << sums[0] << '\n';
     return 0;
 }
-
