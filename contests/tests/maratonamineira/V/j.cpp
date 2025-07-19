@@ -13,9 +13,6 @@ int set_cicle(vector<int> &cicles, int j, int val, int size){
 int main() {
     fastio; 
     int n; cin >> n;
-    if(n == 1){
-        cout << 1 << '\n'; return 0;
-    }
 
     v1.resize(n + 1); 
     v2.resize(n + 1);
@@ -53,10 +50,11 @@ int main() {
             while(search && j <= n){
                 val = v1[val]; 
                 search = val != v2[i] ? true : false;
-    
+                search = v2[j] != 0 && val != v2[j] ? false : search; 
+
                 if(search)
                     {v2[j] = val; vis[j] = 1; cycle_it++;}
-                //cout << "j: " << j << " cycle_size: " << cycle_it << '\n';
+
                 j = j == n || (cycle_it + cycle_elem) == cicles[v2[i]] ? cycle_begin : j+1;
             }
             
@@ -80,3 +78,8 @@ int main() {
 
     return 0;
 }
+
+/*
+-> v2[j] == 0
+
+*/
