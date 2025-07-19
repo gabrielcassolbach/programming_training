@@ -13,6 +13,10 @@ int set_cicle(vector<int> &cicles, int j, int val, int size){
 int main() {
     fastio; 
     int n; cin >> n;
+    if(n == 1){
+        cout << 1 << '\n'; return 0;
+    }
+
     v1.resize(n + 1); 
     v2.resize(n + 1);
 
@@ -20,6 +24,8 @@ int main() {
         cin >> v1[i];
     for(int i = 1; i <= n; i++)
         cin >> v2[i];
+
+            
 
     vector<int> cicles; 
     cicles.resize(n + 1, 0);
@@ -29,44 +35,48 @@ int main() {
         int j = val;
         cicles[i] = set_cicle(cicles, j, val, 0);
     }
-    
-    int prev_elem = 0;
+
+    vector<int> vis; vis.resize(n + 1, 0);
+    int cycle_elem = 0;
     for(int i = 1; i <= n; i++){
-        if(v2[i] == 0) 
-            {prev_elem++; continue;}
-        if(prev_elem + 1 <= cicles[v2[i]]){ 
-            int val = v2[i]; // valor inicial do ciclo == 3.
-            int prox_val = v1[val]; // 4.
-            if(i + 1 > n){
-                
-            }
-            for(int k = 1; k <= cicles[v2[i]] - 1; k++){
 
-
-                
+        if(v2[i] == 0) {cycle_elem++; continue;}
+        if(vis[i]) {continue;}
+        
+        if(cycle_elem + 1 <= cicles[v2[i]]){ 
+            int val = v2[i];
+            int search = true;
+            int cycle_begin = i-cycle_elem;
+            int cycle_it = 1;
+            int j = cycle_elem + 1 < cicles[v2[i]] ?  i+1 : i-cycle_elem;
+            
+            while(search && j <= n){
+                val = v1[val]; 
+                search = val != v2[i] ? true : false;
+    
+                if(search)
+                    {v2[j] = val; vis[j] = 1; cycle_it++;}
+                //cout << "j: " << j << " cycle_size: " << cycle_it << '\n';
+                j = j == n || (cycle_it + cycle_elem) == cicles[v2[i]] ? cycle_begin : j+1;
             }
-            prev_elem = 0;
+            
+            cycle_elem = 0;
         }else{  
             cout << -1 << '\n';
             return 0;
         }
     }
 
-    /*
-    iterar sobre v2:
-        se encontrar um 0 -> continue elem++. 
-        senao:
-            elem + 1 <= cicles(v2[i]) ? -> seta esses valores:
-                coloca os valores em v2 utilizando o cicles.
-                elem = 0.
-            elem + 1 > cicles(v2[i]) -> erro!
-    */
+    vector<int> ans;
+    for(int i = 1; i <= n; i++) {
+        if(v2[i] == 0) 
+            {cout << -1 << '\n'; return 0;}
+        ans.push_back(v2[i]);
+    }
 
-    /*
-        itero sobre v2. se encontrar zero -> -1 (erro)
-        senão
-            imprima v2.
-    */
+    for(int i = 0; i < n; i++) 
+        cout << ans[i] << ' ';
+    cout << '\n';
 
     return 0;
 }
