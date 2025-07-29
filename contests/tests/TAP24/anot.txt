@@ -1,0 +1,4 @@
+Precisa dessa flag ao compilar:
+-std=c++20
+
+-> se passou, feche o arquivo!!!
