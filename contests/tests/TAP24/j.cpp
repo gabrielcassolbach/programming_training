@@ -1,68 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
+using pii = pair<int,int>;
 
-vector<int> v;
-map<int, int> m;
-int n, x;
-vector<pair<int, int>> ans;
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-bool solve() {
-    for(auto e : m) ans.push_back(e);
-    if(m.size() == 2 && m.begin()->first+m.rbegin()->first == x) return false;
-    for(int i = 1; i < (int)ans.size(); ++i) {
-        if(ans[i].first+ans[i-1].first == x) {
-            if(i > 1) {
-                swap(ans[i-1], ans[0]);
-            } else {
-                swap(ans[i], ans[ans.size()-1]);
-            }
-            break;
-        }
-    }
-    return true;
-}
+    int n, X;
+    cin >> n >> X;
 
-int main() {
-    ios_base::sync_with_stdio(false); cin.tie(nullptr);
-    cin >> n >> x;
-    for(int i = 0; i < n; i++){
-        int val; cin >> val;
-        m[val]++; 
+    unordered_map<int,int> freq;
+    freq.reserve(n);
+    for(int i = 0, b; i < n; i++){
+        cin >> b;
+        freq[b]++;
     }
 
-    if((x & 1) == 0 && m.find(x/2) != m.end()) {
-        int cnt_hx = m[x/2];
-        m.erase(x/2);
-        if(n-cnt_hx < cnt_hx-1) {
-            cout << "*\n";
+    // max‐heap by frequency
+    priority_queue<pii> pq;
+    for(auto &p : freq)
+        pq.push({p.second, p.first});
+
+    vector<int> ans;
+    ans.reserve(n);
+
+    while(!pq.empty()){
+        auto [c1,v1] = pq.top(); pq.pop();
+        if(ans.empty() || ans.back() + v1 != X){
+            ans.push_back(v1);
+            if(--c1) pq.push({c1,v1});
         } else {
-            if(!solve() && m[0] >= cnt_hx) {
-                ans.insert(next(ans.begin(), m[0]), {x/2, 1});
-                cnt_hx--;
+            if(pq.empty()){
+                cout << "*\n";
+                return 0;
             }
-            bool first = true;
-            for(auto [val, cnt] : ans) {
-                for(int i = 0; i < cnt; ++i) {
-                    if(cnt_hx-- > 0)
-                        cout << (first ? (first = false, "") : " ") << x/2;
-                    cout << (first ? (first = false, "") : " ") << val;
-                }
-            }
-            if(cnt_hx-- > 0) cout << (first ? (first = false, "") : " ") << x/2;
-            cout << '\n';
-        }
-    } else {
-        if(solve()) {
-            bool first = true;
-            for(auto [val, cnt] : ans) {
-                for(int i = 0; i < cnt; ++i) 
-                    cout << (first ? (first = false, "") : " ") << val;
-            }
-            cout << '\n';
-        } else {
-            cout << "*\n";
+            auto [c2,v2] = pq.top(); pq.pop();
+            ans.push_back(v2);
+            if(--c2) pq.push({c2,v2});
+            pq.push({c1,v1});
         }
     }
-    
+
+    for(int i = 0; i < n; i++)
+        cout << ans[i] << (i+1<n ? ' ' : '\n');
     return 0;
 }
