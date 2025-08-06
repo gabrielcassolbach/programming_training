@@ -3,52 +3,42 @@ using namespace std;
 
 typedef long long ll;
 
-ll countone(ll n){
-    ll cont = 0; 
-    while(n){
-        cont += n%(2ll);
-        n /= (2ll);
+string countOne(ll n){
+    string count = "";
+    while(n) {
+        count += (n%2) == 1 ? '1' : '0';
+        n /= 2;
     }
-    return cont; 
-}
+    reverse(count.begin(), count.end());   
+    return count;
+}   
 
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr);
     ll a, b; cin >> a >> b;
-
+    vector<ll> pot2(61);
     if(a == b){
         cout << a << "\n";
         return 0;
     }
-
+    ll val;
     for(int i = 0; i <= 60; i++){
-        ll val = 1ll << i;      
+        val = 1ll << i;      
+        pot2[i] = val;
         if(val >= a && val <= b){
             cout << val << "\n";
             return 0;
         }
-        if(val > b) break;
+        if(val > b) {
+            val = 1ll << (i-1);
+            break;
+        }
     }
-    // pegar o prefixo comum.
-    // 
-    if(countone(a) <= countone(a+1)){
-        cout << a << "\n";
-    }else{
-        cout << a + 1 << "\n";
-    }
-
+    cout << "val: " << val << "\n";
+    cout << countOne(a) << "\n";
+    cout << countOne(b) << "\n";
+    cout << countOne(val) << "\n";
+    
     return 0;
 }
 
-/*
-
-101001 até <1000000
-
-1000000
-
-110000
-
-101010
-
-
-*/
