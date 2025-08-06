@@ -1,21 +1,38 @@
 #!/bin/bash
 
 SOLUTION=./b
-TEST_DIR=./B
+TEST_DIR=./Test
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# Detecta timeout ou gtimeout automaticamente
+if command -v timeout >/dev/null 2>&1; then
+    TIMEOUT_CMD=timeout
+elif command -v gtimeout >/dev/null 2>&1; then
+    TIMEOUT_CMD=gtimeout
+else
+    echo -e "${RED}Erro: 'timeout' ou 'gtimeout' não encontrado. Instale com 'brew install coreutils'.${NC}"
+    exit 1
+fi
+
+# Verifica permissão de execução
+if [ ! -x "$SOLUTION" ]; then
+    echo -e "${YELLOW}O arquivo '$SOLUTION' não tem permissão de execução. Corrigindo...${NC}"
+    chmod +x "$SOLUTION"
+fi
+
+# Loop de testes
 for input in "$TEST_DIR"/*.in; do
     base=$(basename "$input" .in)
     expected="$TEST_DIR/$base.ans"
 
     echo -n "Running test $base... "
 
-    # Run with timeout of 1 second
-    timeout 1s $SOLUTION < "$input" > out.txt
+    # Executa com timeout de 1 segundo
+    $TIMEOUT_CMD 1s $SOLUTION < "$input" > out.txt
     EXIT_CODE=$?
 
     if [ $EXIT_CODE -eq 124 ]; then
@@ -26,8 +43,8 @@ for input in "$TEST_DIR"/*.in; do
         continue
     fi
 
-    # Compare outputs ignoring trailing whitespace
-    diff -Z -q out.txt "$expected" > /dev/null
+    # Compara saída ignorando espaços em branco no final
+    cmp -s out.txt "$expected"
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}OK${NC}"
     else
