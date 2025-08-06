@@ -33,7 +33,7 @@ ll countDigits(string s){
 int main() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr);
     ll a, b; cin >> a >> b;
-    vector<ll> pot2(61);
+    
     if(a == b){
         cout << a << "\n";
         return 0;
@@ -41,7 +41,6 @@ int main() {
 
     for(int i = 0; i <= 60; i++){
         ll val = 1ll << i;      
-        pot2[i] = val;
         if(val >= a && val <= b){
             cout << val << "\n";
             return 0;
