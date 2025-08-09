@@ -1,30 +1,39 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-template<typename T> using arr = vector<T>;
-template<typename T> using fun = function<T>;
+int main(){
+    ios_base::sync_with_stdio(false); cin.tie(nullptr);
+    int n; 
+    
+    vector<int> v, first_match; set<int> s;  
+    
+    cin >> n; v.resize(n); first_match.resize(101, 0);
+    for(int i = 0; i < n; i++){
+        cin >> v[i]; 
+        if(s.find(v[i]) == s.end()){
+            s.insert(v[i]);     
+            first_match[v[i]] = i;
+        }
+    }
 
-int main() {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr);
-    int n;
-    cin >> n;
-    arr<int> d(n);
-    for(int i = 0; i < n; ++i) cin >> d[i];
-    int res = 0;
-    fun<void (int, int)> f = [&](int l, int r) {
-        int m = *min_element(next(d.begin(), l), next(d.begin(), r));
-        for(int i = l; i < r; ++i) {
-            if(d[i] > m) {
-                int j = i+1;
-                while(j < r && d[j] > m) ++j;
-                f(i, j);
-                i = j-1;
+    int ans = 0;
+    
+    for(auto it = s.begin(); it != s.end(); it++){
+        int i = first_match[*it];
+        bool dont_add = false;
+
+        for(; i < n; i++){
+            if(v[i] < *it){
+                ans++;
+                while(i < n && v[i] != *it) i++;
+                if(i == n && v[i] != *it) dont_add = true;
             }
         }
-        ++res;
-    };
-    f(0, n);
-    cout << res << '\n';
+        
+        if(!dont_add)
+            ans++;
+    }
+    
+    cout << ans << "\n";
     return 0;
 }
