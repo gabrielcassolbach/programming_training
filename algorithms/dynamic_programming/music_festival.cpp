@@ -39,6 +39,8 @@ int main() {
         int id = events.back().first;
         int time = events.back().second;
 
+        for(int i = 1; i <= mask; i++) cout << i << "\n";
+
         cout << id << " " << time << "\n";
 
         events.pop_back();
