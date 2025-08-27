@@ -48,17 +48,21 @@ int main(){
         event sw = s.back();
         s.pop_back();
 
+        cout << "testing... " << sw.id << " " << sw.end << "\n"; 
+            
         for(int i = 1; i <= mask; i++){
             if((i & (1 << sw.id)) == 0)  
                 continue; 
 
             int r = -(1 << 30);
 
+            cout << "in: " << i << "\n";
             if(memo[i].size())
                 for(auto elem : memo[i])
                     if(elem.end <= sw.begin)
                         r = max(r, elem.val + sw.value);
-
+            
+            cout << "in: " << (i ^ (1 << sw.id)) << "\n";    
             if(memo[(i ^ (1 << sw.id))].size())
                 for(auto elem : memo[(i ^ (1 << sw.id))])
                     if(elem.end <= sw.begin)
@@ -67,8 +71,8 @@ int main(){
             if(r != -(1 << 30))
                 memo[i].push_back({sw.end, r});
 
-            debug(memo);
         }
+        debug(memo);
     }
 
     int ans = -1;
