@@ -15,7 +15,7 @@ int count_digits(ll x){
 ll exp10(int x){
     ll a = 1;
     for(int i = 0; i < x; i++)
-        a *= 10;
+        a *= 10;    
     return a;
 }
 
