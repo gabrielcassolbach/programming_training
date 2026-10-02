@@ -9,7 +9,7 @@ int main(){
     int n; cin >> n;
     vector<ll> d; d.resize(n-1); 
     
-    ll r = 1e9, l = -1e9; 
+    ll r = 1e14, l = -1e14; 
 
     // R is the set of all r values such that R < ...
     // L is the set of all l values such that R > ..
@@ -34,7 +34,7 @@ int main(){
         }
     }
 
-    if(r - l >= 2)
+    if(r - l >= 2 && r != 1)
         cout << r-1 << "\n";
     else 
         cout << -1 << "\n";
