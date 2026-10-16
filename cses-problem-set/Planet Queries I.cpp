@@ -25,7 +25,6 @@ void set_memo(){
 int solve(int x, int k){ 
     if((1 << k) == 1)  jump[x][k] = adj[x][0];
     if(jump[x][k] == -1) jump[x][k] = solve(solve(x, k-1), k-1);
-    
     return jump[x][k];
 }   
 
@@ -37,7 +36,7 @@ int main() {
         int val; cin >> val;
         adj[i].push_back(val);
     }
-    
+
     for(int i = 1; i <= n; i++) solve(i, 30);        
 
     while(q--){
